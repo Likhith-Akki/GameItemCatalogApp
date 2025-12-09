@@ -5,20 +5,12 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-}
-
-// enums 
-
-enum ItemType {
-  Weapon
-  Armour
-  PowerUps
+  url      = env("DATABASE_URL")
 }
 
 enum Rarity {
@@ -28,16 +20,25 @@ enum Rarity {
   Legendary
 }
 
-// Item Model
+// ItemCategory table
+
+model ItemCategory {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  items Item[]
+}
+
+// Item table
 
 model Item {
-  id Int @id @default(autoincrement())
-  name String
-  type ItemType
-  rarity Rarity
+  id               Int         @id @default(autoincrement())
+  name             String
+  description      String?
+  categoryId       Int
+  category         ItemCategory @relation(fields: [categoryId], references: [id])
+  rarity           Rarity
   levelRequirement Int
-  description String?
-  stats Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  stats            Json
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
 }
