@@ -17,25 +17,25 @@ services:
       timeout: 5s
       retries: 3
 
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: gameitem_api
-  #   restart: always
-  #   ports:
-  #     - "5000:5000"
-  #   environment:
-  #     DATABASE_URL: postgresql://postgres:postgres@db:5432/gameitemcatalog?schema=public
-  #     NODE_ENV: production
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   command: >
-  #     sh -c "npx prisma migrate deploy ||
-  #            npx prisma db push --accept-data-loss &&
-  #            npm run seed &&
-  #            npm start"
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gameitem_api
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/gameitemcatalog?schema=public
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "npx prisma migrate deploy ||
+             npx prisma db push --accept-data-loss &&
+             npm run seed &&
+             npm start"
 
 volumes:
   pgdata:

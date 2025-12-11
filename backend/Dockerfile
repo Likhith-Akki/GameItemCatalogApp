@@ -12,6 +12,7 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/tsconfig.json ./
+COPY --from=builder /app/openapi.yaml ./openapi.yaml
 
 EXPOSE 5000
 
