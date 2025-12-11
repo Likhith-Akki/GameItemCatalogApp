@@ -42,32 +42,32 @@ docker compose up --build
 Make sure you are in the **backend** directory.
 
 1. Create `.env` manually
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/gameitemcatalog?schema=public"
+- DATABASE_URL="postgresql://postgres:postgres@localhost:5432/gameitemcatalog?schema=public"
 
 2. Install dependencies
-npm install
+- npm install
 
 3. Generate Prisma client
-npx prisma generate
+- npx prisma generate
 
 4. Run only DB container 
-docker compose up -d db
+- docker compose up -d db
 
 5. Setup DB schema (make sure Docker Desktop is running)
-npx prisma db push
+- npx prisma db push
 
 6. Seed data into the DB from seed.mts
-npm run seed
+- npm run seed
 
 7. Check if seeding was successful (DB UI view) - optional
-npx prisma studio
+- npx prisma studio
 (you will see two tables - itemCategory and items with seeded data)
 
 8. Run with hot reload
-npm run dev
+- npm run dev
 
 9. Tests
-npm test 
+- npm test 
 (NOTE: Tests use the real DB and clean up after execution, so re-seed the DB again with npm run seed. Need to isolate the tests in the future.)
 
 
