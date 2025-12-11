@@ -3,6 +3,8 @@ import cors from 'cors'
 import 'dotenv/config'
 import categoryRoutes from './routes/categoryRoutes.ts'
 import itemRoutes from './routes/itemRoutes.ts'
+import swaggerUi from 'swagger-ui-express'
+import yaml from 'yamljs'
 
 const app = express()
 
@@ -18,6 +20,9 @@ app.get('/', (req, res) => {
 
 app.use('/api/categories', categoryRoutes)
 app.use('/api/items', itemRoutes)
+
+const swaggerDocument = yaml.load('./openapi.yaml')
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 
 export default app

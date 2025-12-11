@@ -1,0 +1,201 @@
+openapi: 3.0.0
+info:
+  title: GameItemCatalog API
+  version: 1.0.0
+  description: Full CRUD API for game items & categories
+
+servers:
+  - url: http://localhost:5000
+
+components:
+  schemas:
+    Category:
+      type: object
+      required: [name]
+      properties:
+        id: { type: integer, readOnly: true }
+        name: { type: string, example: "Weapons" }
+
+    Item:
+      type: object
+      required: [name, categoryId, rarity, levelRequirement, stats]
+      properties:
+        id: { type: integer, readOnly: true }
+        name: { type: string, example: "Desert Eagle" }
+        description: { type: string, nullable: true }
+        categoryId: { type: integer }
+        rarity:
+          type: string
+          enum: [Common, Rare, Epic, Legendary]
+        levelRequirement: { type: integer, minimum: 1 }
+        stats: { type: object, additionalProperties: true }
+        category:
+          $ref: '#/components/schemas/Category'
+        createdAt: { type: string, format: date-time, readOnly: true }
+        updatedAt: { type: string, format: date-time, readOnly: true }
+
+paths:
+  /api/categories:
+    get:
+      summary: List all categories
+      tags: [Categories]
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+
+    post:
+      summary: Create a new category
+      tags: [Categories]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '201':
+          description: Category created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+
+  /api/categories/{id}:
+    get:
+      summary: Get category by ID
+      tags: [Categories]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Category found
+        '404':
+          description: Not found
+
+    put:
+      summary: Update category
+      tags: [Categories]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: Category updated
+
+    delete:
+      summary: Delete category
+      tags: [Categories]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Category deleted
+
+  /api/items:
+    get:
+      summary: List items with filters
+      tags: [Items]
+      parameters:
+        - in: query
+          name: rarity
+          schema:
+            type: string
+            enum: [Common, Rare, Epic, Legendary]
+        - in: query
+          name: category
+          schema: { type: string }
+      responses:
+        '200':
+          description: Items with total count
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total: { type: integer }
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Item'
+
+    post:
+      summary: Create new item
+      tags: [Items]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '201':
+          description: Item created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+
+  /api/items/{id}:
+    get:
+      summary: Get item by ID
+      tags: [Items]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Item found
+        '404':
+          description: Not found
+
+    put:
+      summary: Update item
+      tags: [Items]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '200':
+          description: Item updated
+
+    delete:
+      summary: Delete item
+      tags: [Items]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Item deleted
