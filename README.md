@@ -2,7 +2,7 @@
 
 A REST API for managing game items and categories — inspired by the real game - Mini Militia.
 
-Live in one command. Documented with Swagger. Tested. Secure-ready.
+Runs with one Docker command. Documented with Swagger. Includes tests.  
 
 ## Tech Stack
 
@@ -25,48 +25,50 @@ Live in one command. Documented with Swagger. Tested. Secure-ready.
 
 ## One Command Start
 
-clone the repo from git link. 
-Install docker desktop and have it open.
+Clone the repo and make sure Docker Desktop is running.
 
-- make sure you are in backend directory then run below docker cmd.
+From the **backend** directory run below docker cmd:
 
-- bash shell
+# bash shell
 docker compose up --build
 
 
-API → http://localhost:5000
-Swagger → http://localhost:5000/api-docs
-PostgreSQL runs automatically with seeded data in docker.
+- API → http://localhost:5000
+- Swagger → http://localhost:5000/api-docs
+- PostgreSQL runs automatically with seeded data in docker.
 
 
 ## Local Development
-make sure you are at backend directory
+Make sure you are in the **backend** directory.
 
-# .env — create this file manually
+1. Create `.env` manually
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/gameitemcatalog?schema=public"
 
-# install
+2. Install dependencies
 npm install
 
-# generate prisma client
+3. Generate Prisma client
 npx prisma generate
 
-# setup DB schema(open docker desktop)
+4. Run only DB container 
+docker compose up -d db
+
+5. Setup DB schema (make sure Docker Desktop is running)
 npx prisma db push
 
-# seed data into db from seed.mts
+6. Seed data into the DB from seed.mts
 npm run seed
 
-# check if data seeding was done successfully (db ui view)
+7. Check if seeding was successful (DB UI view) - optional
 npx prisma studio
 (you will see two tables - itemCategory and items with seeded data)
 
-# run with hot reload
+8. Run with hot reload
 npm run dev
 
-# tests
+9. Tests
 npm test 
-(NOTE: tests use the real DB and cleans up after execution, so please re-seed the db again with npm run seed. Need to isolate the tests in future.)
+(NOTE: Tests use the real DB and clean up after execution, so re-seed the DB again with npm run seed. Need to isolate the tests in the future.)
 
 
 
